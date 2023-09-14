@@ -2,9 +2,7 @@
   npm install -g create-react-app 
 
 ### Create a new React project:
-  create-react-app react-project\
-  (or)\
-  npx create-react-app react-project
+  create-react-app react-project (or) npx create-react-app react-project
 
 ### Notes:
 * React component names must always start with a capital letter, while HTML tags must be lowercase.
