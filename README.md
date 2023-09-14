@@ -7,7 +7,7 @@
   npx create-react-app react-project
 
 ### Notes:
-React component names must always start with a capital letter, while HTML tags must be lowercase.
+React component names must always start with a capital letter, while HTML tags must be lowercase.\
 In React, you specify a CSS class with className.
 React components are regular JavaScript functions, but their names must start with a capital letter or they won’t work!
 Without parentheses, any code on the lines after return will be ignored!
