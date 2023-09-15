@@ -1,3 +1,6 @@
+# Reference URL:
+[React](https://react.dev/learn)
+
 ## Install React:
   npm install -g create-react-app 
 
@@ -44,4 +47,21 @@
 * React components use props to communicate with each other.
 * Every parent component can pass some information to its child components by giving them props.
 * Props might remind you of HTML attributes, but you can pass any JavaScript value through them, including objects, arrays, and functions.
+* You can give Avatar some props in two steps:
+    * Step 1: Pass props to the child component.
+    * Step 2: Read props inside the child component.
 
+## Specifying a default value for a prop 
+* If you want to give a prop a default value to fall back on when no value is specified, you can do it with the destructuring by putting = and the default value right after the parameter.
+* You can specify a default value like size = 100, which is used for missing and undefined props.
+
+## Forwarding props with the JSX spread syntax
+* You can forward all props with <Avatar {...props} /> JSX spread syntax, but don’t overuse it!
+
+## How props change over time
+* props are immutable — a term from computer science meaning “unchangeable”.
+* When a component needs to change its props (for example, in response to a user interaction or new data), it will have to “ask” its parent component to pass it different props—a new object!
+* Don’t try to “change props”. When you need to respond to the user input (like changing the selected color), you will need to “set state”.
+
+## Conditional Rendering
+* 
