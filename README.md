@@ -72,4 +72,7 @@
 * In JSX, {cond && <A />} means “if cond, render <A />, otherwise nothing”.
 
 ## Rendering Lists
-
+* Move data out of components and into data structures like arrays and objects.
+* Generate sets of similar components with JavaScript’s map().
+* Create arrays of filtered items with JavaScript’s filter().
+* Set key on each component in a collection so React can keep track of each of them even if their position or data changes.
