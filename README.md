@@ -34,12 +34,13 @@
     * When you want to pass a string attribute to JSX, you put it in single or double quotes
 * ### Using curly braces:
     * You can only use curly braces in two ways inside JSX:
-      * As text directly inside a JSX tag: <code><h1>{name}'s To Do List</h1></code> works, but <{tag}>Gregorio Y. Zara's To Do List</{tag}> will not.
+      * As text directly inside a JSX tag. like {name}
       * As attributes immediately following the = sign: src={avatar} will read the avatar variable, but src="{avatar}" will pass the string "{avatar}"
 * ### Using “double curlies”
     * Inline style properties are written in camelCase. For example, HTML <ul style="background-color: black"> would be written as <ul style={{ backgroundColor: 'black' }}>  in your component.
 
-## Passing Props to a Component
+
+## Passing Props to a Component:
 * React components use props to communicate with each other.
 * Every parent component can pass some information to its child components by giving them props.
 * Props might remind you of HTML attributes, but you can pass any JavaScript value through them, including objects, arrays, and functions.
