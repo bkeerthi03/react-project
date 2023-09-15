@@ -64,4 +64,12 @@
 * Don’t try to “change props”. When you need to respond to the user input (like changing the selected color), you will need to “set state”.
 
 ## Conditional Rendering
-* 
+* Your components will often need to display different things depending on different conditions.
+* In React, you can conditionally render JSX using JavaScript syntax like if statements, &&, and ? : operators.
+* You can return a JSX expression conditionally with an if statement.
+* You can conditionally save some JSX to a variable and then include it inside other JSX by using the curly braces.
+* In JSX, {cond ? <A /> : <B />} means “if cond, render <A />, otherwise <B />”.
+* In JSX, {cond && <A />} means “if cond, render <A />, otherwise nothing”.
+
+## Rendering Lists
+
