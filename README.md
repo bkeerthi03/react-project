@@ -185,3 +185,27 @@ After rendering is done and React updated the DOM, the browser will repaint the 
     * setLastName(ln => ln.reverse());
     * setFriendCount(fc => fc * 2);
 * If you prefer more verbose code, another common convention is to repeat the full state variable name, like setEnabled(enabled => !enabled), or to use a prefix like setEnabled(prevEnabled => !prevEnabled).
+
+## Updating Objects in State
+* State can hold any kind of JavaScript value, including objects.
+* But you shouldn’t change objects that you hold in the React state directly.
+* Instead, when you want to update an object, you need to create a new one (or make a copy of an existing one), and then set the state to use that copy.
+### Mutation
+* objects in React state are technically mutable, you should treat them as if they were immutable—like numbers, booleans, and strings. Instead of mutating them, you should always replace them.
+### Treat state as read-only
+* In other words, you should treat any JavaScript object that you put into state as read-only.
+### Copying objects with the spread syntax
+The ... spread syntax is “shallow”—it only copies things one level deep. This makes it fast, but it also means that if you want to update a nested property, you’ll have to use it more than once.
+### Updating a nested object
+#### Write concise update logic with Immer 
+* If your state is deeply nested, you might want to consider flattening it.
+* But, if you don’t want to change your state structure, you might prefer a shortcut to nested spreads.
+* Immer is a popular library that lets you write using the convenient but mutating syntax and takes care of producing the copies for you. With Immer, the code you write looks like you are “breaking the rules” and mutating an object:
+        updatePerson(draft => {
+          draft.artwork.city = 'Lagos';
+        });
+* To try Immer:
+    * Run npm install use-immer to add Immer as a dependency
+    * Then replace import { useState } from 'react' with import { useImmer } from 'use-immer'
+*  Immer is a great way to keep the update handlers concise, especially if there’s nesting in your state, and copying objects leads to repetitive code.
+
