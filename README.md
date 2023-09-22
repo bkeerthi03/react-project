@@ -181,9 +181,7 @@ After rendering is done and React updated the DOM, the browser will repaint the 
 * To update some state multiple times in one event, you can use setNumber(n => n + 1) updater function.
 ### Naming conventions 
 * It’s common to name the updater function argument by the first letters of the corresponding state variable:
-<code>
-setEnabled(e => !e);
+<code>setEnabled(e => !e);
 setLastName(ln => ln.reverse());
-setFriendCount(fc => fc * 2);
-</code>
+setFriendCount(fc => fc * 2);</code>
 * If you prefer more verbose code, another common convention is to repeat the full state variable name, like setEnabled(enabled => !enabled), or to use a prefix like setEnabled(prevEnabled => !prevEnabled).
