@@ -216,7 +216,7 @@ The ... spread syntax is “shallow”—it only copies things one level deep. T
 * Instead, every time you want to update an array, you’ll want to pass a new array to your state setting function. To do that, you can create a new array from the original array in your state by calling its non-mutating methods like filter() and map(). Then you can set your state to the resulting new array.
 * Here is a reference table of common array operations. When dealing with arrays inside React state, you will need to avoid the methods in the left column, and instead prefer the methods in the right column:
 
- | avoid (mutates the array) | prefer (returns a new array)
+| avoid (mutates the array) | prefer (returns a new array)
 | :--- | ---: | :---:
 adding  | push, unshift | concat, [...arr] spread syntax
 removing  | pop, shift, splice | filter, slice
