@@ -209,3 +209,13 @@ The ... spread syntax is “shallow”—it only copies things one level deep. T
     * Then replace import { useState } from 'react' with import { useImmer } from 'use-immer'
 *  Immer is a great way to keep the update handlers concise, especially if there’s nesting in your state, and copying objects leads to repetitive code.
 
+## Updating Arrays in State
+* Arrays are mutable in JavaScript, but you should treat them as immutable when you store them in state.
+* Just like with objects, when you want to update an array stored in state, you need to create a new one (or make a copy of an existing one), and then set state to use the new array.
+* Like with objects, you should treat arrays in React state as read-only. This means that you shouldn’t reassign items inside an array like arr[0] = 'bird', and you also shouldn’t use methods that mutate the array, such as push() and pop().
+* Instead, every time you want to update an array, you’ll want to pass a new array to your state setting function. To do that, you can create a new array from the original array in your state by calling its non-mutating methods like filter() and map(). Then you can set your state to the resulting new array.
+
+Left aligned Header | Right aligned Header | Center aligned Header
+| :--- | ---: | :---:
+Content Cell  | Content Cell | Content Cell
+Content Cell  | Content Cell | Content Cell
