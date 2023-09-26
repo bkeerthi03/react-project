@@ -223,4 +223,12 @@ removing  | pop, shift, splice | filter, slice
 replacing  | 	splice, arr[i] = ... assignment | map
 sorting  | reverse, sort | copy the array first 
 
+Operations  | avoid (mutates the array) | prefer (returns a new array)
+------------- | -------------
+adding  | push, unshift | concat, [...arr] spread syntax
+removing  | pop, shift, splice | filter, slice
+replacing  | 	splice, arr[i] = ... assignment | map
+sorting  | reverse, sort | copy the array first 
+
+
 * Alternatively, you can use Immer which lets you use methods from both columns.
