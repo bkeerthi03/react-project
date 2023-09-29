@@ -2,7 +2,11 @@ import './App.css';
 import { useState } from 'react';
 import  Gallery  from './Gallery';
 import { Profile } from './Gallery';
-import { people } from './data';
+import { people,sculptureList } from './data';
+import Toolbar1 from './toolbar';
+import Form from './form';
+import List1 from './list';
+import { DeleteList } from './list';
 const user = {
   name: 'John'
 };
@@ -32,9 +36,14 @@ function MyButton() {
   }
 
   return (
-    <button onClick={handleClick}>
-      Clicked {count} times
-    </button>
+    <div>
+      <button onClick={handleClick}>
+        Clicked {count} times
+      </button>
+      <button onClick={() => {
+        alert('You clicked me!');
+      }}>click</button>
+    </div> 
   );
 }
 function ShoppingList() {
@@ -182,21 +191,79 @@ export function List() {
   return <ul>{listItems}</ul>;
 }
 
+function AlertButton({ message, children }) {
+  return (
+    <button onClick={() => alert(message)}>
+      {children}
+    </button>
+  );
+}
 
-function App() {
+export function Toolbar() {
   return (
     <div>
-      <h1 className="title">Welcome to {user.name}</h1>
-      <MyButton />
-      <ShoppingList />
-      <MyButton />
-      <Profile />
-      <TodoList />
-      <Profile1 />
-      <PackingList />
-      <List />
+      <AlertButton message="Playing!">
+        Play Movie
+      </AlertButton>
+      <AlertButton message="Uploading!">
+        Upload Image
+      </AlertButton>
     </div>
   );
+}
+
+
+function App() {
+  const [index, setIndex] = useState(0);
+  const [showMore, setShowMore] = useState(false);
+
+  function handleNextClick() {
+    setIndex(index + 1);
+  }
+
+  function handleMoreClick() {
+    setShowMore(!showMore);
+  }
+  let sculpture = sculptureList[index];
+  return (
+    <>
+      {/* <button onClick={handleNextClick}>
+        Next
+      </button>
+      <h2>
+        <i>{sculpture.name} </i> 
+        by {sculpture.artist}
+      </h2>
+      <h3>  
+        ({index + 1} of {sculptureList.length})
+      </h3>
+      <button onClick={handleMoreClick}>
+        {showMore ? 'Hide' : 'Show'} details
+      </button>
+      {showMore && <p>{sculpture.description}</p>}
+      <img 
+        src={sculpture.url} 
+        alt={sculpture.alt}
+      /> */}
+      {/* <Form /> */}
+      {/* <List1 /> */}
+      <DeleteList />
+    </>
+  );
+  // return (
+  //   <div>
+  //     <h1 className="title">Welcome to {user.name}</h1>
+  //     <Toolbar1 />
+  //     <MyButton />
+  //     <ShoppingList />
+  //     <MyButton />
+  //     <Profile />
+  //     <TodoList />
+  //     <Profile1 />
+  //     <PackingList />
+  //     <List /> 
+  //   </div>
+  // );
 }
 
 export default App;
