@@ -224,3 +224,35 @@ replacing  | 	splice, arr[i] = ... assignment | map
 sorting  | reverse, sort | copy the array first 
 
 * Alternatively, you can use Immer which lets you use methods from both columns.
+
+## Adding an Array
+* push() will mutate an array.
+* Instead, create a new array which contains the existing items and a new item at the end. There are multiple ways to do this, but the easiest one is to use the ... array spread syntax.
+
+## Removing from an Array
+* The easiest way to remove an item from an array is to filter it out. In other words, you will produce a new array that will not contain that item. To do this, use the filter method.
+
+## Transforming an array
+* If you want to change some or all items of the array, you can use map() to create a new array. The function you will pass to map can decide what to do with each item, based on its data or its index (or both).
+
+## Replacing items in an array 
+* It is particularly common to want to replace one or more items in an array. Assignments like arr[0] = 'bird' are mutating the original array, so instead you’ll want to use map for this as well.
+* To replace an item, create a new array with map. Inside your map call, you will receive the item index as the second argument. Use it to decide whether to return the original item (the first argument) or something else.
+
+## Inserting into an array 
+* Sometimes, you may want to insert an item at a particular position that’s neither at the beginning nor at the end.
+* To do this, you can use the ... array spread syntax together with the slice() method.
+* The slice() method lets you cut a “slice” of the array. To insert an item, you will create an array that spreads the slice before the insertion point, then the new item, and then the rest of the original array.
+
+## Making other changes to an array
+* There are some things you can’t do with the spread syntax and non-mutating methods like map() and filter() alone.
+* For example, you may want to reverse or sort an array. The JavaScript reverse() and sort() methods are mutating the original array, so you can’t use them directly.
+* However, you can copy the array first, and then make changes to it.
+
+## Updating objects inside arrays 
+When updating nested state, you need to create copies from the point where you want to update, and all the way up to the top level.
+
+## Write concise update logic with Immer
+* Updating nested arrays without mutation can get a little bit repetitive. Just as with objects:
+    * Generally, you shouldn’t need to update state more than a couple of levels deep. If your state objects are very deep, you might want to restructure them differently so that they are flat.
+    * If you don’t want to change your state structure, you might prefer to use Immer, which lets you write using the convenient but mutating syntax and takes care of producing the copies for you.
