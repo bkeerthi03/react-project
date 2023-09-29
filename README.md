@@ -76,3 +76,183 @@
 * Generate sets of similar components with JavaScript’s map().
 * Create arrays of filtered items with JavaScript’s filter().
 * Set key on each component in a collection so React can keep track of each of them even if their position or data changes.
+
+## Adding Interactivity
+
+* Some things on the screen update in response to user input.
+* For example, clicking an image gallery switches the active image.
+* In React, data that changes over time is called state.
+* You can add state to any component, and update it as needed.
+
+## Responding to Events
+* Event handlers are your own functions that will be triggered in response to interactions like clicking, hovering, focusing form inputs, and so on.
+
+## Adding event handlers
+* To add an event handler, you will first define a function and then pass it as a prop to the appropriate JSX tag.
+
+### Reading props in event handlers
+* Because event handlers are declared inside of a component, they have access to the component’s props.
+### Passing event handlers as props 
+* Often you’ll want the parent component to specify a child’s event handler.
+* Consider buttons: depending on where you’re using a Button component, you might want to execute a different function—perhaps one plays a movie and another uploads an image.
+### Naming event handler props 
+* Built-in components like <button> and <div> only support browser event names like onClick.
+* However, when you’re building your own components, you can name their event handler props any way that you like.
+* By convention, event handler props should start with on, followed by a capital letter.
+
+## Event propagation 
+* e.stopPropagation() stops the event handlers attached to the tags above from firing.
+* e.preventDefault() prevents the default browser behavior for the few events that have it.
+
+## State: A Component's Memory
+* Components need to “remember” things: the current input value, the current image, the shopping cart.
+* In React, this kind of component-specific memory is called state.
+* The useState Hook provides those two things:
+    * A state variable to retain the data between renders.
+    * A state setter function to update the variable and trigger React to render the component again.
+
+## Adding a state variable 
+* To add a state variable, import useState from React at the top of the file:
+    * import { useState } from 'react';
+    * const [index, setIndex] = useState(0); - index is a state variable and setIndex is the setter function.
+* In React, useState, as well as any other function starting with ”use”, is called a Hook.
+* Hooks are special functions that are only available while React is rendering. They let you “hook into” different React features.
+* State is just one of those features.
+* When you call useState, you are telling React that you want this component to remember something.
+* The convention is to name this pair like const [something, setSomething]. You could name it anything you like, but conventions make things easier to understand across projects.
+* The only argument to useState is the initial value of your state variable. In this example, the index’s initial value is set to 0 with useState(0).
+* Every time your component renders, useState gives you an array containing two values:
+    * The state variable (index) with the value you stored.
+    * The state setter function (setIndex) which can update the state variable and trigger React to render the component again.
+
+## Giving a component multiple state variables 
+* You can have as many state variables of as many types as you like in one component.
+* This component has two state variables, a number index and a boolean showMore.
+
+## State is isolated and private
+* State is private to the component. If you render it in two places, each copy gets its own state.
+
+## Render and Commit
+* Before your components are displayed on screen, they must be rendered by React.
+* Imagine that your components are cooks in the kitchen, assembling tasty dishes from ingredients. In this scenario, React is the waiter who puts in requests from customers and brings them their orders. This process of requesting and serving UI has three steps:
+    * Triggering a render (delivering the guest’s order to the kitchen)
+    * Rendering the component (preparing the order in the kitchen)
+    * Committing to the DOM (placing the order on the table)
+### Step 1: Trigger a render 
+* There are two reasons for a component to render:
+    * It’s the component’s initial render - When your app starts, you need to trigger the initial render.
+    * The component’s (or one of its ancestors’) state has been updated - Once the component has been initially rendered, you can trigger further renders by updating its state with the set function. Updating           your component’s state automatically queues a render.
+### Step 2: React renders your components
+* After you trigger a render, React calls your components to figure out what to display on screen. “Rendering” is React calling your components.
+* On initial render, React will call the root component.
+* For subsequent renders, React will call the function component whose state update triggered the render.
+* This process is recursive: if the updated component returns some other component, React will render that component next, and if that component also returns something, it will render that component next, and so on. The process will continue until there are no more nested components and React knows exactly what should be displayed on screen.
+### Step 3: React commits changes to the DOM 
+* After rendering (calling) your components, React will modify the DOM.
+* For the initial render, React will use the appendChild() DOM API to put all the DOM nodes it has created on screen.
+* For re-renders, React will apply the minimal necessary operations (calculated while rendering!) to make the DOM match the latest rendering output.
+
+## Epilogue: Browser paint 
+After rendering is done and React updated the DOM, the browser will repaint the screen. Although this process is known as “browser rendering”, we’ll refer to it as “painting”.
+
+## State as a Snapshot
+### Setting state triggers renders
+* For an interface to react to the event, you need to update the state.
+### Rendering takes a snapshot in time 
+* “Rendering” means that React is calling your component, which is a function.
+* The JSX you return from that function is like a snapshot of the UI in time.
+* Its props, event handlers, and local variables were all calculated using its state at the time of the render.
+* When React re-renders a component:
+    * React calls your function again.
+    * Your function returns a new JSX snapshot.
+    * React then updates the screen to match the snapshot you’ve returned.
+* As a component’s memory, state is not like a regular variable that disappears after your function returns.
+* State actually “lives” in React itself—as if on a shelf!—outside of your function.
+* When React calls your component, it gives you a snapshot of the state for that particular render.
+* Your component returns a snapshot of the UI with a fresh set of props and event handlers in its JSX, all calculated using the state values from that render!
+
+## Queueing a Series of State Updates
+* Setting a state variable will queue another render. But sometimes you might want to perform multiple operations on the value before queueing the next render.
+* To do this, it helps to understand how React batches state updates.
+* Setting state does not change the variable in the existing render, but it requests a new render.
+### React batches state updates 
+* React processes state updates after event handlers have finished running. This is called batching.
+### Updating the same state multiple times before the next render 
+* To update some state multiple times in one event, you can use setNumber(n => n + 1) updater function.
+### Naming conventions 
+* It’s common to name the updater function argument by the first letters of the corresponding state variable:
+    * setEnabled(e => !e);
+    * setLastName(ln => ln.reverse());
+    * setFriendCount(fc => fc * 2);
+* If you prefer more verbose code, another common convention is to repeat the full state variable name, like setEnabled(enabled => !enabled), or to use a prefix like setEnabled(prevEnabled => !prevEnabled).
+
+## Updating Objects in State
+* State can hold any kind of JavaScript value, including objects.
+* But you shouldn’t change objects that you hold in the React state directly.
+* Instead, when you want to update an object, you need to create a new one (or make a copy of an existing one), and then set the state to use that copy.
+### Mutation
+* objects in React state are technically mutable, you should treat them as if they were immutable—like numbers, booleans, and strings. Instead of mutating them, you should always replace them.
+### Treat state as read-only
+* In other words, you should treat any JavaScript object that you put into state as read-only.
+### Copying objects with the spread syntax
+The ... spread syntax is “shallow”—it only copies things one level deep. This makes it fast, but it also means that if you want to update a nested property, you’ll have to use it more than once.
+### Updating a nested object
+#### Write concise update logic with Immer 
+* If your state is deeply nested, you might want to consider flattening it.
+* But, if you don’t want to change your state structure, you might prefer a shortcut to nested spreads.
+* Immer is a popular library that lets you write using the convenient but mutating syntax and takes care of producing the copies for you. With Immer, the code you write looks like you are “breaking the rules” and mutating an object:
+        updatePerson(draft => {
+          draft.artwork.city = 'Lagos';
+        });
+* To try Immer:
+    * Run npm install use-immer to add Immer as a dependency
+    * Then replace import { useState } from 'react' with import { useImmer } from 'use-immer'
+*  Immer is a great way to keep the update handlers concise, especially if there’s nesting in your state, and copying objects leads to repetitive code.
+
+## Updating Arrays in State
+* Arrays are mutable in JavaScript, but you should treat them as immutable when you store them in state.
+* Just like with objects, when you want to update an array stored in state, you need to create a new one (or make a copy of an existing one), and then set state to use the new array.
+* Like with objects, you should treat arrays in React state as read-only. This means that you shouldn’t reassign items inside an array like arr[0] = 'bird', and you also shouldn’t use methods that mutate the array, such as push() and pop().
+* Instead, every time you want to update an array, you’ll want to pass a new array to your state setting function. To do that, you can create a new array from the original array in your state by calling its non-mutating methods like filter() and map(). Then you can set your state to the resulting new array.
+* Here is a reference table of common array operations. When dealing with arrays inside React state, you will need to avoid the methods in the left column, and instead prefer the methods in the right column:
+
+operations | avoid (mutates the array) | prefer (returns a new array)
+| :--- | ---: | :---:
+adding  | push, unshift | concat, [...arr] spread syntax
+removing  | pop, shift, splice | filter, slice
+replacing  | 	splice, arr[i] = ... assignment | map
+sorting  | reverse, sort | copy the array first 
+
+* Alternatively, you can use Immer which lets you use methods from both columns.
+
+## Adding an Array
+* push() will mutate an array.
+* Instead, create a new array which contains the existing items and a new item at the end. There are multiple ways to do this, but the easiest one is to use the ... array spread syntax.
+
+## Removing from an Array
+* The easiest way to remove an item from an array is to filter it out. In other words, you will produce a new array that will not contain that item. To do this, use the filter method.
+
+## Transforming an array
+* If you want to change some or all items of the array, you can use map() to create a new array. The function you will pass to map can decide what to do with each item, based on its data or its index (or both).
+
+## Replacing items in an array 
+* It is particularly common to want to replace one or more items in an array. Assignments like arr[0] = 'bird' are mutating the original array, so instead you’ll want to use map for this as well.
+* To replace an item, create a new array with map. Inside your map call, you will receive the item index as the second argument. Use it to decide whether to return the original item (the first argument) or something else.
+
+## Inserting into an array 
+* Sometimes, you may want to insert an item at a particular position that’s neither at the beginning nor at the end.
+* To do this, you can use the ... array spread syntax together with the slice() method.
+* The slice() method lets you cut a “slice” of the array. To insert an item, you will create an array that spreads the slice before the insertion point, then the new item, and then the rest of the original array.
+
+## Making other changes to an array
+* There are some things you can’t do with the spread syntax and non-mutating methods like map() and filter() alone.
+* For example, you may want to reverse or sort an array. The JavaScript reverse() and sort() methods are mutating the original array, so you can’t use them directly.
+* However, you can copy the array first, and then make changes to it.
+
+## Updating objects inside arrays 
+When updating nested state, you need to create copies from the point where you want to update, and all the way up to the top level.
+
+## Write concise update logic with Immer
+* Updating nested arrays without mutation can get a little bit repetitive. Just as with objects:
+    * Generally, you shouldn’t need to update state more than a couple of levels deep. If your state objects are very deep, you might want to restructure them differently so that they are flat.
+    * If you don’t want to change your state structure, you might prefer to use Immer, which lets you write using the convenient but mutating syntax and takes care of producing the copies for you.
