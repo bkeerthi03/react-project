@@ -305,7 +305,7 @@ When updating nested state, you need to create copies from the point where you w
 * By default, React runs the effects after every render - including the first render.
 * Similar to useState, you can use more than a single effect in a component.
 
-## Context Hooks
+## useContext
 * Context lets a component receive information from distant parents without passing it as props.
 * For example, your app’s top-level component can pass the current UI theme to all components below, no matter how deep.
 * **useContext** - reads and subscribes to a context.
