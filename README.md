@@ -283,31 +283,17 @@ When updating nested state, you need to create copies from the point where you w
         * Call Hooks from custom Hooks.
     * By following this rule, you ensure that all stateful logic in a component is clearly visible from its source code.
 
-## State Hooks
+### useState
 * State lets a component “remember” information like user input.
 * For example, a form component can use state to store the input value, while an image gallery component can use state to store the selected image index.
-* To add state to a component, use one of these Hooks:
-    * **useState** - declares a state variable that you can update directly.
-    * **useReducer** - declares a state variable with the update logic inside a reducer function.
-*  const [index, setIndex] = useState(0);
+* const [index, setIndex] = useState(0);
+* useState returns a pair: the current state value and a function that lets you update it.
+* useState setter function will replace the older value
+* we can use single and many useState hooks.
+* Hooks execute one after another in a sequence.
 
-## Context Hooks
-* Context lets a component receive information from distant parents without passing it as props.
-* For example, your app’s top-level component can pass the current UI theme to all components below, no matter how deep.
-* **useContext** - reads and subscribes to a context.
-* const theme = useContext(ThemeContext);
-
-## Ref Hooks 
-* Refs let a component hold some information that isn’t used for rendering, like a DOM node or a timeout ID.
-* Unlike with state, updating a ref does not re-render your component.
-* Refs are an “escape hatch” from the React paradigm. They are useful when you need to work with non-React systems, such as the built-in browser APIs.
-* **useRef** - declares a ref. You can hold any value in it, but most often it’s used to hold a DOM node.
-* **useImperativeHandle** - lets you customize the ref exposed by your component. This is rarely used.
-* const inputRef = useRef(null);
-
-## Effect Hooks
-* Effects let a component connect to and synchronize with external systems. This includes dealing with network, browser DOM, animations, widgets written using a different UI library, and other non-React code.
-* **useEffect** - connects a component to an external system.
+### useEffect
+* connects a component to an external system.
 * function ChatRoom({ roomId }) {
   useEffect(() => {
     const connection = createConnection(roomId);
@@ -315,38 +301,16 @@ When updating nested state, you need to create copies from the point where you w
     return () => connection.disconnect();
   }, [roomId]);
   // ...
-* There are two rarely used variations of **useEffect** with differences in timing:
-    * **useLayoutEffect** - fires before the browser repaints the screen. You can measure layout here.
-    * **useInsertionEffect** - fires before React makes changes to the DOM. Libraries can insert dynamic CSS here.
+* useEffect adds the ability to perform side effectss from a function component.
+* By default, React runs the effects after every render - including the first render.
+* Similar to useState, you can use more than a single effect in a component.
 
-## Performance Hooks
-* A common way to optimize re-rendering performance is to skip unnecessary work.
-* For example, you can tell React to reuse a cached calculation or to skip a re-render if the data has not changed since the previous render.
-* To skip calculations and unnecessary re-rendering, use one of these Hooks:
-    * **useMemo** - lets you cache the result of an expensive calculation.
-    * **useCallback** - lets you cache a function definition before passing it down to an optimized component.
-* function TodoList({ todos, tab, theme }) {
-  const visibleTodos = useMemo(() => filterTodos(todos, tab), [todos, tab]);
-  // ...
-}
-* Sometimes, you can’t skip re-rendering because the screen actually needs to update.
-* In that case, you can improve performance by separating blocking updates that must be synchronous (like typing into an input) from non-blocking updates which don’t need to block the user interface (like updating a chart).
-* To prioritize rendering, use one of these Hooks:
-     * **useTransition** - lets you mark a state transition as non-blocking and allow other updates to interrupt it.
-     * **useDeferredValue** - lets you defer updating a non-critical part of the UI and let other parts update first.
+## Context Hooks
+* Context lets a component receive information from distant parents without passing it as props.
+* For example, your app’s top-level component can pass the current UI theme to all components below, no matter how deep.
+* **useContext** - reads and subscribes to a context.
+* const ThemeContext = createContext();
+* const theme = useContext(ThemeContext);
 
-## Resource Hooks
-* Resources can be accessed by a component without having them as part of their state. For example, a component can read a message from a Promise or read styling information from a context.
-* To read a value from a resource, use this Hook:
-    * **use** - lets you read the value of a resource like a Promise or context.
-* function MessageComponent({ messagePromise }) {
-  const message = use(messagePromise);
-  const theme = use(ThemeContext);
-  // ...
-}
 
-## Other Hooks
-* **useDebugValue** - lets you customize the label React DevTools displays for your custom Hook.
-* **useId** - lets a component associate a unique ID with itself. Typically used with accessibility APIs.
-* **useSyncExternalStore** - lets a component subscribe to an external store.
 
