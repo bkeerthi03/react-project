@@ -1,5 +1,6 @@
 # Reference URL:
 [React](https://react.dev/learn)
+[React Legacy](https://legacy.reactjs.org/docs)
 
 ## Install React:
   npm install -g create-react-app 
@@ -16,6 +17,47 @@
 * When a child component needs some data from a parent, pass it by props instead of nesting definitions.
 * Every module can have two different types of export, named export and default export. You can have multiple named exports per module but only one default export.
 
+## LifeCycle Methods:
+* To define a React component class, you need to extend React.Component.
+* The only method you must define in a React.Component subclass is called render(). All the other methods are optional.
+### Mounting
+* These methods are called in the following order when an instance of a component is being created and inserted into the DOM:
+    * constructor() - If you don’t initialize state and you don’t bind methods, you don’t need to implement a constructor for your React component.The constructor for a React component is called before it is mounted. When implementing the constructor for a React.Component subclass, you should call super(props) before any other statement. Otherwise, this.props will be undefined in the constructor, which can lead to bugs.
+    * static getDerivedStateFromProps() - getDerivedStateFromProps is invoked right before calling the render method, both on the initial mount and on subsequent updates. It should return an object to update the state, or null to update nothing.
+    * render() - The render() method is the only required method in a class component.When called, it should examine this.props and this.state and return one of the following types: React elements, Arrays and fragments, Portals, String and numbers, Booleans or null or undefined.
+    * componentDidMount() - componentDidMount() is invoked immediately after a component is mounted (inserted into the tree)
+### Updating
+* An update can be caused by changes to props or state. These methods are called in the following order when a component is being re-rendered:
+    * static getDerivedStateFromProps()
+    * shouldComponentUpdate() - shouldComponentUpdate() is invoked before rendering when new props or state are being received. Defaults to true. This method is not called for the initial render or when forceUpdate() is used.
+    * render() - The render() method is the only required method in a class component.When called, it should examine this.props and this.state and return one of the following types: React elements, Arrays and fragments, Portals, String and numbers, Booleans or null or undefined.
+    * getSnapshotBeforeUpdate() - getSnapshotBeforeUpdate() is invoked right before the most recently rendered output is committed to e.g. the DOM. It enables your component to capture some information from the DOM (e.g. scroll position) before it is potentially changed. Any value returned by this lifecycle method will be passed as a parameter to componentDidUpdate().
+    * componentDidUpdate() - componentDidUpdate() is invoked immediately after updating occurs. This method is not called for the initial render.
+### Unmounting
+* This method is called when a component is being removed from the DOM:
+    * componentWillUnmount() - componentWillUnmount() is invoked immediately before a component is unmounted and destroyed.
+### Error Handling
+* These methods are called when there is an error during rendering, in a lifecycle method, or in the constructor of any child component.
+    * static getDerivedStateFromError() - This lifecycle is invoked after an error has been thrown by a descendant component. It receives the error that was thrown as a parameter and should return a value to update state.
+    * componentDidCatch() - This lifecycle is invoked after an error has been thrown by a descendant component. It receives two parameters: error - The error that was thrown, info - An object with a componentStack key containing information about which component threw the error. componentDidCatch() is called during the “commit” phase, so side-effects are permitted. It should be used for things like logging errors.
+### Other APIs
+* Each component also provides some other APIs:
+    * setState() - setState() enqueues changes to the component state and tells React that this component and its children need to be re-rendered with the updated state. This is the primary method you use to update the user interface in response to event handlers and server responses.
+    * forceUpdate() - By default, when your component’s state or props change, your component will re-render. If your render() method depends on some other data, you can tell React that the component needs re-rendering by calling forceUpdate().Calling forceUpdate() will cause render() to be called on the component, skipping shouldComponentUpdate(). This will trigger the normal lifecycle methods for child components, including the shouldComponentUpdate() method of each child. React will still only update the DOM if the markup changes.
+### Class Properties
+* defaultProps - defaultProps can be defined as a property on the component class itself, to set the default props for the class. This is used for undefined props, but not for null props.
+      * class CustomButton extends React.Component {
+  // ...
+}
+
+CustomButton.defaultProps = {
+  color: 'blue'
+};
+* displayName - The displayName string is used in debugging messages.
+### Instance Properties
+* props - this.props contains the props that were defined by the caller of this component. In particular, this.props.children is a special prop, typically defined by the child tags in the JSX expression rather than in the tag itself.
+* state - The state contains data specific to this component that may change over time. The state is user-defined, and it should be a plain JavaScript object. Never mutate this.state directly, as calling setState() afterwards may replace the mutation you made. Treat this.state as if it were immutable.
+ 
 ## Syntax for Export statement and Import statement:
 * Default	export default function -> Button() {} ->	import Button from './Button.js';
 * Named	export function -> Button() {}	-> import { Button } from './Button.js';
