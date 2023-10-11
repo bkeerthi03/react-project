@@ -57,7 +57,23 @@ CustomButton.defaultProps = {
 ### Instance Properties
 * props - this.props contains the props that were defined by the caller of this component. In particular, this.props.children is a special prop, typically defined by the child tags in the JSX expression rather than in the tag itself.
 * state - The state contains data specific to this component that may change over time. The state is user-defined, and it should be a plain JavaScript object. Never mutate this.state directly, as calling setState() afterwards may replace the mutation you made. Treat this.state as if it were immutable.
- 
+
+### Notes
+* Receiving latest props from the parent and updating state - using getDerivedStateFromProps
+* conditional rendering - if else, ternary, Inline If with Logical && Operator
+* Parent component to child component data sharing - using props
+* Child component to parent component data sharing - passing callback function to child and return data to parent
+* Binding this to the function - this.example=this.example.bind(this) - normal function
+* Using of 'key' property while iterating data inside render method - <div key={item.id}> or else throws an warning* - theory
+* Optional callback parameter in setState method - setState({},SomeCallbackFunction(pass data)) - immedaite updated state concept
+* Maintaing a class compoent with out state - directly use props
+* Maintaing state with outing using constructor - directly use variables
+* functional compoent.
+* React.Fragment - <> </> - wrapping to single group of list for multiple elements
+* Writing external styles - import "../product.css";
+* To show an array of data, Why we are using map method in render -  map() creates a new array from calling a function for every array element, map() does not change the original array.
+* Writing <form> element, onSubmit of form stoping default action - event.stopPropagation(), event.preventDefault()
+  
 ## Syntax for Export statement and Import statement:
 * Default	export default function -> Button() {} ->	import Button from './Button.js';
 * Named	export function -> Button() {}	-> import { Button } from './Button.js';
