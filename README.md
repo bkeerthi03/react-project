@@ -73,7 +73,17 @@ CustomButton.defaultProps = {
 * Writing external styles - import "../product.css";
 * To show an array of data, Why we are using map method in render -  map() creates a new array from calling a function for every array element, map() does not change the original array.
 * Writing <form> element, onSubmit of form stoping default action - event.stopPropagation(), event.preventDefault()
-  
+
+## Keys
+* Keys tell React which array item each component corresponds to, so that it can match them up later.
+* This becomes important if your array items can move (e.g. due to sorting), get inserted, or get deleted.
+* A well-chosen key helps React infer what exactly has happened, and make the correct updates to the DOM tree.
+* Do not generate keys on the fly, e.g. with key={Math.random()}. This will cause keys to never match up between renders, leading to all your components and DOM being recreated every time.
+* React can keep track of each of them even if their position or data changes.
+## Rules of keys 
+* Keys must be unique among siblings. However, it’s okay to use the same keys for JSX nodes in different arrays.
+* Keys must not change or that defeats their purpose! Don’t generate them while rendering.
+
 ## Syntax for Export statement and Import statement:
 * Default	export default function -> Button() {} ->	import Button from './Button.js';
 * Named	export function -> Button() {}	-> import { Button } from './Button.js';
