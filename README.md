@@ -393,3 +393,84 @@ When updating nested state, you need to create copies from the point where you w
     * **The current state** - During the first render, it’s set to init(initialArg) or initialArg (if there’s no init).
     * **The dispatch function** - lets you update the state to a different value and trigger a re-render.
 
+## useCallback
+* Returns a memoized callback.
+* const memoizedCallback = useCallback(
+  () => {
+    doSomething(a, b);
+  },
+  [a, b],
+);
+* Pass an inline callback and an array of dependencies.
+* useCallback will return a memoized version of the callback that only changes if one of the dependencies has changed. This is useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders (e.g. shouldComponentUpdate).
+* useCallback(fn, deps) is equivalent to useMemo(() => fn, dep
+
+## useMemo
+* const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+* Returns a memoized value.
+* useMemo will only recompute the memoized value when one of the dependencies has changed. This optimization helps to avoid expensive calculations on every render.
+
+## useRef
+* useRef is a React Hook that lets you reference a value that’s not needed for rendering.
+* const ref = useRef(initialValue)
+* **Parameters**
+    * **initialValue:** The value you want the ref object’s current property to be initially. It can be a value of any type. This argument is ignored after the initial render.
+* **Returns** - useRef returns an object with a single property:
+    * **current:** Initially, it’s set to the initialValue you have passed. You can later set it to something else. If you pass the ref object to React as a ref attribute to a JSX node, React will set its current property.
+    * On the next renders, useRef will return the same object.
+
+## useImperativeHandle
+* useImperativeHandle is a React Hook that lets you customize the handle exposed as a ref.
+* useImperativeHandle(ref, createHandle, dependencies?)
+* **Parameters**
+    * **ref:** The ref you received as the second argument from the forwardRef render function.
+    * **createHandle:** A function that takes no arguments and returns the ref handle you want to expose. That ref handle can have any type. Usually, you will return an object with the methods you want to expose.
+    * **optional dependencies:** The list of all reactive values referenced inside of the createHandle code. Reactive values include props, state, and all the variables and functions declared directly inside your component body. The list of dependencies must have a constant number of items and be written inline like [dep1, dep2, dep3]. React will compare each dependency with its previous value using the Object.is comparison. If a re-render resulted in a change to some dependency, or if you omitted this argument, your createHandle function will re-execute, and the newly created handle will be assigned to the ref.
+ 
+## useLayoutEffect
+* useLayoutEffect is a version of useEffect that fires before the browser repaints the screen.
+* useLayoutEffect(setup, dependencies?)
+
+## useInsertionEffect
+* useInsertionEffect allows inserting elements into the DOM before any layout effects fire.
+* useInsertionEffect(setup, dependencies?)
+* **Parameters** 
+    * **setup:** The function with your Effect’s logic. Your setup function may also optionally return a cleanup function. When your component is added to the DOM, but before any layout effects fire, React will run your setup function. After every re-render with changed dependencies, React will first run the cleanup function (if you provided it) with the old values, and then run your setup function with the new values. When your component is removed from the DOM, React will run your cleanup function.
+    * **optional dependencies:** The list of all reactive values referenced inside of the setup code. Reactive values include props, state, and all the variables and functions declared directly inside your component body. The list of dependencies must have a constant number of items and be written inline like [dep1, dep2, dep3]. React will compare each dependency with its previous value using the Object.is comparison algorithm. If you don’t specify the dependencies at all, your Effect will re-run after every re-render of the component.
+ 
+## useDebugValue
+* useDebugValue is a React Hook that lets you add a label to a custom Hook in React DevTools.
+* useDebugValue(value, format?)
+* **Parameters**
+    * **value:** The value you want to display in React DevTools. It can have any type.
+    * **optional format:** A formatting function. When the component is inspected, React DevTools will call the formatting function with the value as the argument, and then display the returned formatted value (which may have any type). If you don’t specify the formatting function, the original value itself will be displayed.
+ 
+## useDeferredValue
+* useDeferredValue is a React Hook that lets you defer updating a part of the UI.
+* const deferredValue = useDeferredValue(value)
+* **Parameters** -> **value:** The value you want to defer. It can have any type.
+
+## useTransition
+* useTransition is a React Hook that lets you update the state without blocking the UI.
+* const [isPending, startTransition] = useTransition()
+* **Parameters** - useTransition does not take any parameters.
+* **Returns** - useTransition returns an array with exactly two items:
+    * The **isPending** flag that tells you whether there is a pending transition.
+    * The **startTransition** function that lets you mark a state update as a transition.
+
+## useId
+* useId is a React Hook for generating unique IDs that can be passed to accessibility attributes.
+* const id = useId()
+* **Parameters** - useId does not take any parameters.
+* **Returns** - useId returns a unique ID string associated with this particular useId call in this particular component.
+
+## useSyncExternalStore
+* useSyncExternalStore is a React Hook that lets you subscribe to an external store.
+* const snapshot = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot?)
+* Call useSyncExternalStore at the top level of your component to read a value from an external data store.
+* **Parameters**
+    * **subscribe:** A function that takes a single callback argument and subscribes it to the store. When the store changes, it should invoke the provided callback. This will cause the component to re-render. The subscribe function should return a function that cleans up the subscription.
+    * **getSnapshot:** A function that returns a snapshot of the data in the store that’s needed by the component. While the store has not changed, repeated calls to getSnapshot must return the same value. If the store changes and the returned value is different (as compared by Object.is), React re-renders the component.
+    * **optional getServerSnapshot:** A function that returns the initial snapshot of the data in the store. It will be used only during server rendering and during hydration of server-rendered content on the client. The server snapshot must be the same between the client and the server, and is usually serialized and passed from the server to the client. If you omit this argument, rendering the component on the server will throw an error.
+* **Returns** 
+The current snapshot of the store which you can use in your rendering logic.
