@@ -99,11 +99,11 @@ These patterns allow you to build richer and more complex UIs, democratizing fea
 * Metadata can be defined by exporting a metadata object or generateMetadata function in a layout.js or page.js file.
 
 ## Linking and Navigating
-There are two ways to navigate between routes in Next.js: Using the <pre><Link></pre> Component and Using the useRouter Hook.
+There are two ways to navigate between routes in Next.js: Using the Link Component and Using the useRouter Hook.
+
 **Link Component**:
 * Link is a built-in component that extends the HTML <a> tag to provide prefetching and client-side navigation between routes.
 * It is the primary way to navigate between routes in Next.js.
-* <Link href="/dashboard">Dashboard</Link>
 * props available for the Link Component:
   * **href (required)** - The path or URL to navigate to. <Link href="/dashboard">Dashboard</Link>. href can also accept an object. You can use it by importing it from next/link, and passing a href prop to the component.
   * **replace** - Defaults to false. When true, next/link will replace the current history state instead of adding a new URL into the browser’s history stack.
