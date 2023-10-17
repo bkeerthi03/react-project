@@ -99,3 +99,13 @@ These patterns allow you to build richer and more complex UIs, democratizing fea
 * Metadata can be defined by exporting a metadata object or generateMetadata function in a layout.js or page.js file.
 
 ## Linking and Navigating
+There are two ways to navigate between routes in Next.js: Using the <pre><Link></pre> Component and Using the useRouter Hook.
+**Link Component**:
+* Link is a built-in component that extends the HTML <a> tag to provide prefetching and client-side navigation between routes.
+* It is the primary way to navigate between routes in Next.js.
+* <Link href="/dashboard">Dashboard</Link>
+* props available for the Link Component:
+  * **href (required)** - The path or URL to navigate to. <Link href="/dashboard">Dashboard</Link>. href can also accept an object. You can use it by importing it from next/link, and passing a href prop to the component.
+  * **replace** - Defaults to false. When true, next/link will replace the current history state instead of adding a new URL into the browser’s history stack.
+  * **scroll** - Defaults to true. The default behavior of <Link> is to scroll to the top of a new route or to maintain the scroll position for backwards and forwards navigation. When false, next/link will not scroll to the top of the page after a navigation.
+  * **prefetch** - Defaults to true. When true, next/link will prefetch the page (denoted by the href) in the background. This is useful for improving the performance of client-side navigations. Any <Link /> in the viewport (initially or through scroll) will be preloaded. Prefetch can be disabled by passing prefetch={false}. Prefetching is only enabled in production.
