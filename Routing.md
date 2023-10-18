@@ -109,3 +109,51 @@ There are two ways to navigate between routes in Next.js: Using the Link Compone
   * **replace** - Defaults to false. When true, next/link will replace the current history state instead of adding a new URL into the browser’s history stack.
   * **scroll** - Defaults to true. The default behavior of <Link> is to scroll to the top of a new route or to maintain the scroll position for backwards and forwards navigation. When false, next/link will not scroll to the top of the page after a navigation.
   * **prefetch** - Defaults to true. When true, next/link will prefetch the page (denoted by the href) in the background. This is useful for improving the performance of client-side navigations. Any <Link /> in the viewport (initially or through scroll) will be preloaded. Prefetch can be disabled by passing prefetch={false}. Prefetching is only enabled in production.
+  * **Checking Active Links** - You can use usePathname() to determine if a link is active. For example, to add a class to the active link, you can check if the current pathname matches the href of the link.
+  * **Scrolling to an id** - The default behavior of the Next.js App Router is to scroll to the top of a new route or to maintain the scroll position for backwards and forwards navigation. If you'd like to scroll to a specific id on navigation, you can append your URL with a # hash link or just pass a hash link to the href prop. This is possible since <Link> renders to an <a> element.
+  * **Disabling scroll restoration** - The default behavior of the Next.js App Router is to scroll to the top of a new route or to maintain the scroll position for backwards and forwards navigation. If you'd like to disable this behavior, you can pass scroll={false} to the <Link> component, or scroll: false to router.push() or router.replace().
+ 
+**useRouter() Hook**:
+* The useRouter hook allows you to programmatically change routes. This hook can only be used inside Client Components and is imported from next/navigation.
+* **router.push(href: string, { scroll: boolean }):** Perform a client-side navigation to the provided route. Adds a new entry into the browser’s history stack.
+* **router.replace(href: string, { scroll: boolean }):** Perform a client-side navigation to the provided route without adding a new entry into the browser’s history stack.
+* **router.refresh():** Refresh the current route. Making a new request to the server, re-fetching data requests, and re-rendering Server Components. The client will merge the updated React Server Component payload without losing unaffected client-side React (e.g. useState) or browser state (e.g. scroll position).
+* **router.prefetch(href: string):** Prefetch the provided route for faster client-side transitions.
+* **router.back():** Navigate back to the previous route in the browser’s history stack.
+* **router.forward():** Navigate forwards to the next page in the browser’s history stack.
+* **Migrating from next/router**
+   * The useRouter hook should be imported from next/navigation and not next/router when using the App Router.
+   * The pathname string has been removed and is replaced by usePathname().
+   * The query object has been removed and is replaced by useSearchParams().
+   * router.events has been replaced.
+* v13.0.0 - useRouter from next/navigation introduced.
+
+### How Routing and Navigation Works
+The App Router uses a hybrid approach for routing and navigation. On the server, your application code is automatically code-split by route segments. And on the client, Next.js prefetches and caches the route segments. This means, when a user navigates to a new route, the browser doesn't reload the page, and only the route segments that change re-render - improving the navigation experience and performance.
+
+**1. Prefetching**
+* Prefetching is a way to preload a route in the background before the user visits it. There are two ways routes are prefetched in Next.js:
+   * **Link component:** Routes are automatically prefetched as they become visible in the user's viewport. Prefetching happens when the page first loads or when it comes into view through scrolling.
+   * **router.prefetch():** The useRouter hook can be used to prefetch routes programmatically.
+* The<Link>'s prefetching behavior is different for static and dynamic routes:
+   * **Static Routes:** prefetch defaults to true. The entire route is prefetched and cached.
+   * **Dynamic Routes:** prefetch default to automatic. Only the shared layout down until the first loading.js file is prefetched and cached for 30s. This reduces the cost of fetching an entire dynamic route, and it means you can show an instant loading state for better visual feedback to users.
+* You can disable prefetching by setting the prefetch prop to false.
+
+**2. Caching**
+* Next.js has an in-memory client-side cache called the Router Cache. As users navigate around the app, the React Server Component Payload of prefetched route segments and visited routes are stored in the cache.
+* This means on navigation, the cache is reused as much as possible, instead of making a new request to the server - improving performance by reducing the number of requests and data transferred.
+
+**3. Partial Rendering**
+* Partial rendering means only the route segments that change on navigation re-render on the client, and any shared segments are preserved.
+* For example, when navigating between two sibling routes, /dashboard/settings and /dashboard/analytics, the settings and analytics pages will be rendered, and the shared dashboard layout will be preserved.
+* Without partial rendering, each navigation would cause the full page to re-render on the server. Rendering only the segment that changes reduces the amount of data transferred and execution time, leading to improved performance.
+
+**4. Soft Navigation**
+* By default, the browser performs a hard navigation between pages. This means the browser reloads the page and resets React state such as useState hooks in your app and browser state such as the user's scroll position or focused element.
+* However, in Next.js, the App Router uses soft navigation. This means React only renders the segments that have changed while preserving React and browser state, and there is no full page reload.
+
+**5. Back and Forward Navigation**
+* By default, Next.js will maintain the scroll position for backwards and forwards navigation, and re-use route segments in the Router Cache.
+
+## Route Groups
