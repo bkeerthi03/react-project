@@ -1,4 +1,4 @@
-npm install react-router-dom --save
+npx create-next-app@latest
 # Using App Router
 
 ## Routing Fundamentals
@@ -157,3 +157,67 @@ The App Router uses a hybrid approach for routing and navigation. On the server,
 * By default, Next.js will maintain the scroll position for backwards and forwards navigation, and re-use route segments in the Router Cache.
 
 ## Route Groups
+* In the app directory, nested folders are normally mapped to URL paths. However, you can mark a folder as a Route Group to prevent the folder from being included in the route's URL path.
+* This allows you to organize your route segments and project files into logical groups without affecting the URL path structure.
+* Route groups are useful for:
+   * Organizing routes into groups e.g. by site section, intent, or team.
+   * Enabling nested layouts in the same route segment level:
+      * Creating multiple nested layouts in the same segment, including multiple root layouts
+      * Adding a layout to a subset of routes in a common segment
+* **Convention** - A route group can be created by wrapping a folder's name in parenthesis: (folderName)
+
+## Dynamic Routes
+* When you don't know the exact segment names ahead of time and want to create routes from dynamic data, you can use Dynamic Segments that are filled in at request time or prerendered at build time.
+* **Convention**
+   * A Dynamic Segment can be created by wrapping a folder's name in square brackets: [folderName]. For example, [id] or [slug].
+   * Dynamic Segments are passed as the params prop to layout, page, route, and generateMetadata functions.
+* For example, a blog could include the following route app/blog/[slug]/page.js where [slug] is the Dynamic Segment for blog posts.
+
+### Generating Static Params
+* The generateStaticParams function can be used in combination with dynamic route segments to statically generate routes at build time instead of on-demand at request time.
+* The primary benefit of the generateStaticParams function is its smart retrieval of data.
+* If content is fetched within the generateStaticParams function using a fetch request, the requests are automatically memoized.
+* This means a fetch request with the same arguments across multiple generateStaticParams, Layouts, and Pages will only be made once, which decreases build times.
+
+### Catch-all Segments
+* Dynamic Segments can be extended to catch-all subsequent segments by adding an ellipsis inside the brackets [...folderName].
+* For example, app/shop/[...slug]/page.js will match /shop/clothes, but also /shop/clothes/tops, /shop/clothes/tops/t-shirts, and so on.
+
+### Optional Catch-all Segments
+* Catch-all Segments can be made optional by including the parameter in double square brackets: [[...folderName]].
+* For example, app/shop/[[...slug]]/page.js will also match /shop, in addition to /shop/clothes, /shop/clothes/tops, /shop/clothes/tops/t-shirts.
+* The difference between catch-all and optional catch-all segments is that with optional, the route without the parameter is also matched (/shop in the example above)
+
+### TypeScript
+* When using TypeScript, you can add types for params depending on your configured route segment.
+
+## Loading UI and Streaming
+* The special file loading.js helps you create meaningful Loading UI with React Suspense.
+* With this convention, you can show an instant loading state from the server while the content of a route segment loads. The new content is automatically swapped in once rendering is complete.
+
+### Instant Loading States
+* An instant loading state is fallback UI that is shown immediately upon navigation.
+* You can pre-render loading indicators such as skeletons and spinners, or a small but meaningful part of future screens such as a cover photo, title, etc. This helps users understand the app is responding and provides a better user experience.
+
+### Streaming with Suspense
+* In addition to loading.js, you can also manually create Suspense Boundaries for your own UI components. The App Router supports streaming with Suspense for both Node.js and Edge runtimes.
+* Streaming allows you to break down the page's HTML into smaller chunks and progressively send those chunks from the server to the client.
+* Streaming works well with React's component model because each component can be considered a chunk.
+* Components that have higher priority (e.g. product information) or that don't rely on data can be sent first (e.g. layout), and React can start hydration earlier. Components that have lower priority (e.g. reviews, related products) can be sent in the same server request after their data has been fetched.
+
+## Error Handling
+* The error.js file convention allows you to gracefully handle unexpected runtime errors in nested routes.
+* Automatically wrap a route segment and its nested children in a React Error Boundary.
+* Create error UI tailored to specific segments using the file-system hierarchy to adjust granularity.
+* Isolate errors to affected segments while keeping the rest of the application functional.
+* Add functionality to attempt to recover from an error without a full page reload.
+* Create error UI by adding an error.js file inside a route segment and exporting a React component.
+
+## Parallel Routes
+* Parallel Routing allows you to simultaneously or conditionally render one or more pages in the same layout.
+* For highly dynamic sections of an app, such as dashboards and feeds on social sites, Parallel Routing can be used to implement complex routing patterns.
+* Parallel Routing allows you to define independent error and loading states for each route as they're being streamed in independently.
+* Parallel Routing also allows you to conditionally render a slot based on certain conditions, such as authentication state. This enables fully separated code on the same URL.
+## Convention
+* Parallel routes are created using named slots. Slots are defined with the @folder convention, and are passed to the same-level layout as props.
+* Slots are not route segments and do not affect the URL structure. The file path /@team/members would be accessible at /members.
