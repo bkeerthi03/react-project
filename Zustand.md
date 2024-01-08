@@ -42,7 +42,7 @@ A store is a container for a specific piece of state and any functions that modi
       * npm install zustand or yarn add zustand
 
 ### Once you’ve installed Zustand, you can create a store like this:
-<code>
+
 import create from 'zustand';
 
 type Store = {
@@ -58,5 +58,5 @@ const useStore = create<Store>((set) => ({
 }));
 
 export default useStore;
-</code>
+
 
