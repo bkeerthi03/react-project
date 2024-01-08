@@ -1,3 +1,4 @@
-Zustand
-Differences between Zustand, Redux and Context API
+# Zustand
+
+## Differences between Zustand, Redux and Context API
 
